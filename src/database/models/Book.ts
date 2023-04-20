@@ -1,22 +1,44 @@
 import { DataTypes, Model, ModelDefined, Optional } from 'sequelize';
 import db from '.';
-import { Book } from '../../types/Book';
 
 export type BookCreationAttributes = Optional<Book, 'id'>;
 
-type BookModelDefinedType = ModelDefined<Book, BookCreationAttributes>;
-
 export type BookModelType = Model<Book, BookCreationAttributes>;
 
-const BookModel: BookModelDefinedType = db.define('Book', {
-  title: DataTypes.STRING,
-  price: DataTypes.DECIMAL(10, 2),
-  author: DataTypes.STRING,
-  isbn: DataTypes.STRING,
+class Book extends Model {
+  declare id: number;
+  declare title: string;
+  declare price: number;
+  declare author: string;
+  declare isbn: string;
+}
+
+Book.init({
+  id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  title: {
+    type: DataTypes.STRING(30),
+    allowNull: false,
+  },
+  price: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false,
+  },
+  author: {
+    type: DataTypes.STRING(100),
+    allowNull: false,
+  },
+  isbn: {
+    type: DataTypes.STRING(100),
+  },
 }, {
-  tableName: 'books',
+  sequelize: db,
+  modelName: 'books',
   timestamps: false,
-  underscored: true,
 });
 
-export default BookModel;
+export default Book;
