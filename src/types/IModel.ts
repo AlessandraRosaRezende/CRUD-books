@@ -6,9 +6,9 @@ export interface IModelReader<T> {
 }
 
 export interface IModelWriter<T> {
-  create(data: NewEntity<T>): Promise<T>,
+  create(data: NewEntity<T>): Promise<T | Error>,
   update(id: Identifiable['id'], data: Partial<T>): Promise<T | null>,
-  delete(id: Identifiable['id']): Promise<void>
+  delete(id: Identifiable['id']): Promise<number>
 }
 
 export interface IModel<T> extends IModelReader<T>, IModelWriter<T> { }

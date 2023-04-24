@@ -31,7 +31,7 @@ export default class BookController {
 
   public async createBook(req: Request, res: Response) {
     const serviceResponse = await this.bookService.createBook(req.body);
-
+    console.log("serviceResponse", serviceResponse);
     if (serviceResponse.status !== 'SUCCESSFUL') {
       return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
     }

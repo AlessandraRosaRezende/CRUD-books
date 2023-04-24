@@ -1,4 +1,4 @@
-import { SequelizeBookModel } from '../models/SequelizeBookModel';
+import { BookModel } from '../models/BookModel';
 import { NewEntity } from '../types';
 import { IBook } from '../types/IBook';
 import { IModel } from '../types/IModel';
@@ -6,7 +6,7 @@ import { ServiceMessage, ServiceResponse } from '../types/ServiceResponse';
 
 export default class BookService {
   constructor(
-    private bookModel: IModel<IBook> = new SequelizeBookModel(),
+    private bookModel: IModel<IBook> = new BookModel(),
   ) { }
 
   public async getAllBooks(): Promise<ServiceResponse<IBook[]>> {
@@ -32,8 +32,16 @@ export default class BookService {
     const error = BookService.validationBook(book);
     if (error) return { status: 'INVALID_DATA', data: { message: error } };
 
-    const newBook = await this.bookModel.create(book);
-    return { status: 'SUCCESSFUL', data: newBook };
+    try {
+      const newBook = await this.bookModel.create(book);
+    
+      return { status: 'SUCCESSFUL', data: newBook };
+    } catch (e: any) {
+      if (e.name == 'SequelizeUniqueConstraintError') {
+        return { status: 'CONFLICT', data: { message: "duplicado" } };
+      }
+      return { status: 'INTERNAL_SERVER_ERROR', data: { message: e.message } };
+    }
   }
 
   public async updateBook(id: number, book: NewEntity<IBook>): Promise<ServiceResponse<ServiceMessage | IBook>> {
