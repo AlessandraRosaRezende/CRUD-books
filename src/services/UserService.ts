@@ -17,11 +17,14 @@ export default class UserService {
     return { status: 'SUCCESSFUL', data: allUsers };
   }
 
-  public async login({ email, password }: ILogin): Promise<string> {
-    const user = await this.userModel.findOne({email, password});
-    const { id, role, name } = user as IUser;
-    const token = this.jwtService.sign({ email, role });
-    return token;
+  public async login(data: ILogin): Promise<ServiceResponse<ServiceMessage>> {
+    const user = await this.userModel.findOne(data);
+    if (user) {
+      const { role, email } = user as IUser;
+      const token = this.jwtService.sign({ email, role });
+      return { status: 'SUCCESSFUL', data: { message: token } };
+    }
+    return { status: 'INVALID_DATA', data: { message: 'User not found' } }
   }
 
   static validationUser(user: NewEntity<IUser>): string | null {
@@ -35,7 +38,7 @@ export default class UserService {
     const error = UserService.validationUser(user);
     if (error) return { status: 'INVALID_DATA', data: { message: error } };
 
-    const userFound = await this.userModel.findOne(user);
+    const userFound = await this.userModel.findOne({ email: user.email });
     if (userFound) return { status: 'CONFLICT', data: { message: 'User already exists' } };
 
     const newUser = await this.userModel.create(user);
