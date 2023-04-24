@@ -10,5 +10,6 @@ router.get('/:id', (req, res) => bookController.getBookById(req, res));
 router.post('/', (req, res) => bookController.createBook(req, res));
 router.put('/:id', (req, res) => bookController.updateBook(req, res));
 router.delete('/:id', (req, res) => bookController.deleteBook(req, res));
+router.get('/author/search', (req, res) => bookController.getBookByQuery(req, res));
 
 export default router;

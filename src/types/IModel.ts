@@ -3,6 +3,7 @@ import { Identifiable, NewEntity } from '.';
 export interface IModelReader<T> {
   find(id: Identifiable['id']): Promise<T | null>,
   findAll(): Promise<T[]>,
+  findByQuery(q: string): Promise<T[]>
 }
 
 export interface IModelWriter<T> {

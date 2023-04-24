@@ -52,4 +52,11 @@ export default class BookService {
     await this.bookModel.delete(id);
     return { status: 'SUCCESSFUL', data: { message: 'Book deleted' } };
   }
+
+  public async getBookByQuery(q: string): Promise<ServiceResponse<IBook[] | ServiceMessage>> {
+    const book = await this.bookModel.findByQuery(q);
+    if (book && book.length === 0) return { status: 'NOT_FOUND', data: { message: `Author ${q} not found` } };
+    
+    return { status: 'SUCCESSFUL', data: book };
+  }
 }
