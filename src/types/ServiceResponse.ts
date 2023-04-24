@@ -1,4 +1,4 @@
-type ServiceResponseStatus = 'INVALID_DATA' | 'UNAUTHORIZED' | 'NOT_FOUND' | 'SUCCESSFUL';
+type ServiceResponseStatus = 'INVALID_DATA' | 'UNAUTHORIZED' | 'NOT_FOUND' | 'SUCCESSFUL' | 'CONFLICT';
 
 export type ServiceMessage = { message: string }
 

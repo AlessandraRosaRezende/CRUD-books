@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import UserService from '../services/UserService';
+import { JsonWebTokenError } from 'jsonwebtoken';
 import mapStatusHTTP from '../utils/mapStatusHTTP';
 
 export default class UserController {
@@ -17,13 +18,21 @@ export default class UserController {
     res.status(200).json(serviceResponse.data);
   }
 
-  // public async createBook(req: Request, res: Response) {
-  //   const serviceResponse = await this.bookService.createBook(req.body);
+  public async login(req: Request, res: Response) {
+    const token = await this.userService.login(req.body);
+    return res.status(200).json({ token });
+  }
 
-  //   if (serviceResponse.status !== 'SUCCESSFUL') {
-  //     return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
-  //   }
+  public async createUser(req: Request, res: Response) {
+    if (req.body.user.role !== 'admin') {
+      throw new JsonWebTokenError('You are not authorized to create a user');
+    }
 
-  //   res.status(201).json(serviceResponse.data);
-  // }
+    const serviceResponse = await this.userService.createUser(req.body);
+    if (serviceResponse.status !== 'SUCCESSFUL') {
+      return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
+    }
+
+    res.status(201).json(serviceResponse.data);
+  }
 }

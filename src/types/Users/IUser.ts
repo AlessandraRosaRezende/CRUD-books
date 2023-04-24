@@ -4,5 +4,5 @@ export interface IUser extends Identifiable {
   email: string,
   password: string,
   name: string,
-  role: string
+  role?: string
 }

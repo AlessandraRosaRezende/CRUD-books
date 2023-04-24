@@ -1,6 +1,7 @@
 import express = require('express');
 import 'express-async-errors';
 import router from './routes';
+import errorMiddleware from './middlewares/httpErrorMiddleware';
 
 class App {
   public app: express.Express;
@@ -11,6 +12,8 @@ class App {
     this.app.use(express.json());
 
     this.routes();
+
+    this.app.use(errorMiddleware);
 
     // Não remover essa rota
     this.app.get('/', (req, res) => res.status(200).send('Express + TypeScript'));
