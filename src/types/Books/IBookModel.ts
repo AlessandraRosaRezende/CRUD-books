@@ -1,4 +1,4 @@
-import { Identifiable, NewEntity } from '.';
+import { Identifiable, NewEntity } from '..';
 
 export interface IModelReader<T> {
   find(id: Identifiable['id']): Promise<T | null>,

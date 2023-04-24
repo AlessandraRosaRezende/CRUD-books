@@ -1,8 +1,8 @@
 import { Op } from 'sequelize';
 import Book from '../database/models/Book';
 import { NewEntity } from '../types';
-import { IBook } from '../types/IBook';
-import { IModel } from '../types/IModel';
+import { IBook } from '../types/Books/IBook';
+import { IModel } from '../types/Books/IBookModel';
 
 export class SequelizeBookModel implements IModel<IBook> {
   find = (id: number): Promise<IBook | null> => Book.findByPk(id)

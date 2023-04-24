@@ -1,6 +1,6 @@
 import express = require('express');
 import 'express-async-errors';
-import bookRouter from './routes/books.routes';
+import router from './routes';
 
 class App {
   public app: express.Express;
@@ -17,7 +17,7 @@ class App {
   }
 
   private routes(): void {
-    this.app.use('/books', bookRouter);
+    this.app.use(router);
   }
 
   public start(PORT: string | number):void {

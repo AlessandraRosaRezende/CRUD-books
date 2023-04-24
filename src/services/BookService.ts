@@ -1,7 +1,7 @@
 import { SequelizeBookModel } from '../models/SequelizeBookModel';
 import { NewEntity } from '../types';
-import { IBook } from '../types/IBook';
-import { IModel } from '../types/IModel';
+import { IBook } from '../types/Books/IBook';
+import { IModel } from '../types/Books/IBookModel';
 import { ServiceMessage, ServiceResponse } from '../types/ServiceResponse';
 
 export default class BookService {
