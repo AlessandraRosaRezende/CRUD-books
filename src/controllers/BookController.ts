@@ -5,15 +5,15 @@ import mapStatusHTTP from '../utils/mapStatusHTTP';
 export default class BookController {
   constructor(
     private bookService = new BookService(),
-  ) {}
+  ) { }
 
   public async getAllBooks(_req: Request, res: Response) {
     const serviceResponse = await this.bookService.getAllBooks();
-    
+
     if (serviceResponse.status !== 'SUCCESSFUL') {
-      return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);  
+      return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
     }
-    
+
     res.status(200).json(serviceResponse.data);
   }
 
@@ -23,20 +23,20 @@ export default class BookController {
     const serviceResponse = await this.bookService.getBookById(Number(id));
 
     if (serviceResponse.status !== 'SUCCESSFUL') {
-      return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);  
+      return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
     }
-    
+
     res.status(200).json(serviceResponse.data);
   }
 
   public async createBook(req: Request, res: Response) {
     const serviceResponse = await this.bookService.createBook(req.body);
 
-  if (serviceResponse.status !== 'SUCCESSFUL') {
-    return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);  
-  }
+    if (serviceResponse.status !== 'SUCCESSFUL') {
+      return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
+    }
 
-  res.status(201).json(serviceResponse.data);
+    res.status(201).json(serviceResponse.data);
   }
 
   public async updateBook(req: Request, res: Response): Promise<Response> {
@@ -45,10 +45,10 @@ export default class BookController {
     const serviceResponse = await this.bookService.updateBook(id, book);
 
     if (serviceResponse.status !== 'SUCCESSFUL') {
-      return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);  
+      return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
     }
 
-    return res.status(200).json( {message: 'Book updated'});
+    return res.status(200).json(serviceResponse.data);
   };
 
   public async deleteBook(req: Request, res: Response): Promise<Response> {
@@ -56,9 +56,9 @@ export default class BookController {
     const serviceResponse = await this.bookService.deleteBook(id);
 
     if (serviceResponse.status !== 'SUCCESSFUL') {
-      return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);  
+      return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
     }
 
-    return res.status(200).json( {message: 'Book deleted'});
+    return res.status(200).json(serviceResponse.data);
   };
 }

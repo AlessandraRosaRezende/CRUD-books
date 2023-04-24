@@ -1,13 +1,8 @@
-type ServiceResponseErrorType = 'INVALID_DATA' | 'UNAUTHORIZED' | 'NOT_FOUND';
+type ServiceResponseStatus = 'INVALID_DATA' | 'UNAUTHORIZED' | 'NOT_FOUND' | 'SUCCESSFUL';
 
-export type ServiceResponseError = {
-  status: ServiceResponseErrorType, 
-  data: { message: string }
-};
+export type ServiceMessage = { message: string }
 
-export type ServiceResponseSuccess<T> = {
-  status: 'SUCCESSFUL', 
+export type ServiceResponse<T> = {
+  status: ServiceResponseStatus,
   data: T
 };
-
-export type ServiceResponse<T> = ServiceResponseError | ServiceResponseSuccess<T>;
