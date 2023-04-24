@@ -1,28 +1,26 @@
-import BookModel, { BookCreationAttributes, BookModelType } from '../database/models/Book';
+import { SequelizeBookModel } from '../models/SequelizeBookModel';
+import { NewEntity } from '../types';
+import { IBook } from '../types/IBook';
+import { IModel } from '../types/IModel';
 import { ServiceMessage, ServiceResponse } from '../types/ServiceResponse';
-
-// const properties = ['title', 'price', 'author', 'isbn'];
 
 export default class BookService {
   constructor(
-    private bookModel = BookModel,
+    private bookModel: IModel<IBook> = new SequelizeBookModel(),
   ) { }
 
-  public async getAllBooks(): Promise<ServiceResponse<BookModelType[]>> {
+  public async getAllBooks(): Promise<ServiceResponse<IBook[]>> {
     const allBooks = await this.bookModel.findAll();
-
     return { status: 'SUCCESSFUL', data: allBooks };
   }
 
-  public async getBookById(id: number): Promise<ServiceResponse<BookModelType | ServiceMessage>> {
-    const book = await this.bookModel.findByPk(id);
-
+  public async getBookById(id: number): Promise<ServiceResponse<IBook | ServiceMessage>> {
+    const book = await this.bookModel.find(id);
     if (!book) return { status: 'NOT_FOUND', data: { message: `Book ${id} not found` } };
-
     return { status: 'SUCCESSFUL', data: book };
   }
 
-  static validationBook(book: BookCreationAttributes): string | null {
+  static validationBook(book: NewEntity<IBook>): string | null {
     if (!book.title) return 'title is required';
     if (!book.price) return 'price is required';
     if (!book.author) return 'author is required';
@@ -30,55 +28,28 @@ export default class BookService {
     return null;
   }
 
-  public async createBook(book: BookCreationAttributes): Promise<ServiceResponse<BookModelType | ServiceMessage>> {
-    let responseService: ServiceResponse<BookModelType | ServiceMessage>;
-
+  public async createBook(book: NewEntity<IBook>): Promise<ServiceResponse<IBook | ServiceMessage>> {
     const error = BookService.validationBook(book);
-
-    if (error) {
-      responseService = { status: 'INVALID_DATA', data: { message: error } };
-      return responseService;
-    }
+    if (error) return { status: 'INVALID_DATA', data: { message: error } };
 
     const newBook = await this.bookModel.create(book);
-
-    responseService = { status: 'SUCCESSFUL', data: newBook };
-
-    return responseService;
+    return { status: 'SUCCESSFUL', data: newBook };
   }
 
-  public async updateBook(id: number, book: BookCreationAttributes): Promise<ServiceResponse<ServiceMessage>> {
-    let responseService: ServiceResponse<ServiceMessage>;
-
+  public async updateBook(id: number, book: NewEntity<IBook>): Promise<ServiceResponse<ServiceMessage | IBook>> {
     const error = BookService.validationBook(book);
+    if (error) return { status: 'INVALID_DATA', data: { message: error } };
 
-    if (error) {
-      responseService = { status: 'INVALID_DATA', data: { message: error } };
-      return responseService;
-    }
-
-    const bookFound = await this.bookModel.findByPk(id);
-
-    if (!bookFound) return { status: 'NOT_FOUND', data: { message: `Book ${id} not found` } };
-
-    await this.bookModel.update({ ...book }, { where: { id } });
-
-    responseService = { status: 'SUCCESSFUL', data: { message: 'Book updated' } };
-
-    return responseService;
+    const updatedBook = await this.bookModel.update(id, book);
+    if (!updatedBook) return { status: 'NOT_FOUND', data: { message: `Book ${id} not found` } };
+    return { status: 'SUCCESSFUL', data: updatedBook };
   }
 
   public async deleteBook(id: number): Promise<ServiceResponse<ServiceMessage>> {
-    let responseService: ServiceResponse<ServiceMessage>;
-
-    const bookFound = await this.bookModel.findByPk(id);
-
+    const bookFound = await this.bookModel.find(id);
     if (!bookFound) return { status: 'NOT_FOUND', data: { message: `Book ${id} not found` } };
 
-    await this.bookModel.destroy({ where: { id } });
-
-    responseService = { status: 'SUCCESSFUL', data: { message: 'Book deleted' } };
-
-    return responseService;
+    await this.bookModel.delete(id);
+    return { status: 'SUCCESSFUL', data: { message: 'Book deleted' } };
   }
 }

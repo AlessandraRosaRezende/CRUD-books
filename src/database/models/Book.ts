@@ -1,15 +1,15 @@
-import { DataTypes, Model, ModelDefined, Optional } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import db from '.';
-
-export type BookCreationAttributes = Optional<Book, 'id'>;
-
-export type BookModelType = Model<Book, BookCreationAttributes>;
 
 class Book extends Model {
   declare id: number;
+
   declare title: string;
+
   declare price: number;
+
   declare author: string;
+
   declare isbn: string;
 }
 
