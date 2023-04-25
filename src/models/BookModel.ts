@@ -7,56 +7,34 @@ export class BookModel implements IModel<IBook> {
 
   async find(id: number): Promise<IBook | null> {
     const dbData = await SequelizeBook.findByPk(id);
-    if (dbData == null) {
-      return null;
-    }
-    const theBook: IBook = {
-      id: dbData.id,
-      title: dbData.title,
-      price: dbData.price,
-      author: dbData.author,
-      isbn: dbData.isbn
-    }
-    return theBook;
+    if (dbData == null) return null;
+
+    const { title, price, author, isbn }: IBook = dbData;
+    return { id, title, price, author, isbn }
   }
 
   async findAll(): Promise<IBook[]> {
     const dbData = await SequelizeBook.findAll();
-    return dbData.map(theBook => {
-      const b: IBook = {
-        id: theBook.id,
-        title: theBook.title,
-        price: theBook.price,
-        author: theBook.author,
-        isbn: theBook.isbn
-      }
-      return b;
-    })
+    return dbData.map(({ id, title, price, author, isbn }) => (
+      { id, title, price, author, isbn }
+    ));
   } 
 
   async create(data: NewEntity<IBook>): Promise<IBook> {
-      const dbData =  await SequelizeBook.create(data);
+    const dbData =  await SequelizeBook.create(data);
 
-      const theBook: IBook = {
-        id: dbData.id,
-        title: dbData.title,
-        price: dbData.price,
-        author: dbData.author,
-        isbn: dbData.isbn
-      }
-      return theBook;
+    const { id, title, price, author, isbn }: IBook = dbData;
+    return { id, title, price, author, isbn }
   }
 
   async update(id: number, data: Partial<IBook>): Promise<IBook | null>{
     const [affectedRows] = await SequelizeBook.update(data, { where: { id } });
-    if (affectedRows == 0) {
-      return null;
-    }
+    if (affectedRows == 0) return null;
+
     return this.find(id);
   }
 
-  async delete(id: number): Promise<number> {
-    const destroyedRows = await SequelizeBook.destroy({ where: { id } });
-    return destroyedRows;
+  async delete(id: number): Promise<void> {
+    await SequelizeBook.destroy({ where: { id } });
   }
 }
