@@ -1,6 +1,7 @@
 import express = require('express');
 import 'express-async-errors';
-import bookRouter from './routes/books.routes';
+import router from './routes';
+import errorMiddleware from './middlewares/httpErrorMiddleware';
 
 class App {
   public app: express.Express;
@@ -12,12 +13,14 @@ class App {
 
     this.routes();
 
+    this.app.use(errorMiddleware);
+
     // Não remover essa rota
     this.app.get('/', (req, res) => res.status(200).send('Express + TypeScript'));
   }
 
   private routes(): void {
-    this.app.use('/books', bookRouter);
+    this.app.use(router);
   }
 
   public start(PORT: string | number):void {
@@ -25,4 +28,4 @@ class App {
   }
 }
 
-export { App };
+export default App;
