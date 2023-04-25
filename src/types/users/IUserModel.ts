@@ -1,9 +1,9 @@
 import { Identifiable, NewEntity } from '..';
-import ILogin from '../../interfaces/ILogin';
+// import ILogin from '../../interfaces/ILogin';
 
 export interface IModelReader<T> {
   findAll(): Promise<T[]>,
-  findOne(data: ILogin
+  // findOne(data: ILogin): Promise<T>,
 }
 
 export interface IModelWriter<T> {
