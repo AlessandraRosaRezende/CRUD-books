@@ -1,6 +1,5 @@
 import UserModel from '../models/UserModel';
-import { NewEntity } from '../interfaces';
-import { IUser } from '../interfaces/users/IUser';
+import { INewUser, IUser } from '../interfaces/users/IUser';
 import { IUserModel } from '../interfaces/users/IUserModel';
 import { ServiceMessage, ServiceResponse } from '../interfaces/ServiceResponse';
 import JWT from '../utils/JWT';
@@ -36,18 +35,8 @@ export default class UserService {
     return { status: 'notFound', data: { message: 'User not found' } };
   }
 
-  static validationUser(user: NewEntity<IUser>): string | null {
-    if (!user.email) return 'email is required';
-    if (!user.password) return 'password is required';
-    if (!user.name) return 'name is required';
-    return null;
-  }
-
-  public async createUser(user: NewEntity<IUser>):
+  public async createUser(user: INewUser):
   Promise<ServiceResponse<IUser | ServiceMessage>> {
-    const error = UserService.validationUser(user);
-    if (error) return { status: 'invalidData', data: { message: error } };
-
     const userFound = await this.userModel.findOne(user.email);
     if (userFound) return { status: 'conflict', data: { message: 'User already exists' } };
 

@@ -1,8 +1,9 @@
-import { Identifiable } from '..';
-
-export interface IBook extends Identifiable {
+export interface IBook {
+  id: number,
   title: string,
   price: number,
   author: string,
   isbn: string,
 }
+
+export type INewBook = Omit<IBook, 'id'>;

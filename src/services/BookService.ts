@@ -1,6 +1,5 @@
 import BookModel from '../models/BookModel';
-import { NewEntity } from '../interfaces';
-import { IBook } from '../interfaces/books/IBook';
+import { IBook, INewBook } from '../interfaces/books/IBook';
 import { IBookModel } from '../interfaces/books/IBookModel';
 import { ServiceMessage, ServiceResponse } from '../interfaces/ServiceResponse';
 
@@ -20,13 +19,13 @@ export default class BookService {
     return { status: 'successful', data: book };
   }
 
-  public async createBook(book: NewEntity<IBook>):
+  public async createBook(book: INewBook):
   Promise<ServiceResponse<IBook | ServiceMessage>> {
     const newBook = await this.bookModel.create(book);
     return { status: 'successful', data: newBook };
   }
 
-  public async updateBook(id: number, book: NewEntity<IBook>):
+  public async updateBook(id: number, book: INewBook):
   Promise<ServiceResponse<ServiceMessage | IBook>> {
     const updatedBook = await this.bookModel.update(id, book);
     if (!updatedBook) return { status: 'notFound', data: { message: `Book ${id} not found` } };

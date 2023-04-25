@@ -1,11 +1,10 @@
-import { Identifiable, NewEntity } from '..';
-import { IBook } from './IBook';
+import { IBook, INewBook } from './IBook';
 
 export interface IBookModel {
-  find(id: Identifiable['id']): Promise<IBook | null>,
+  find(id: IBook['id']): Promise<IBook | null>,
   findAll(): Promise<IBook[]>,
   findByQuery(q: string): Promise<IBook[]>
-  create(data: NewEntity<IBook>): Promise<IBook>,
-  update(id: Identifiable['id'], data: Partial<NewEntity<IBook>>): Promise<IBook | null>,
-  delete(id: Identifiable['id']): Promise<void>
+  create(data: INewBook): Promise<IBook>,
+  update(id: IBook['id'], data: Partial<INewBook>): Promise<IBook | null>,
+  delete(id: IBook['id']): Promise<void>
 }
