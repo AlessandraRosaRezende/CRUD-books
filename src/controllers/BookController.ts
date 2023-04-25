@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import BookService from '../services/BookService';
+import { JsonWebTokenError } from 'jsonwebtoken';
 import mapStatusHTTP from '../utils/mapStatusHTTP';
 
 export default class BookController {
@@ -30,6 +31,9 @@ export default class BookController {
   }
 
   public async createBook(req: Request, res: Response) {
+    if (req.body.user.role !== 'admin') {
+      throw new JsonWebTokenError('You are not authorized to create a book');
+    }
     const serviceResponse = await this.bookService.createBook(req.body);
 
     if (serviceResponse.status !== 'SUCCESSFUL') {
@@ -40,6 +44,9 @@ export default class BookController {
   }
 
   public async updateBook(req: Request, res: Response): Promise<Response> {
+    if (req.body.user.role !== 'admin') {
+      throw new JsonWebTokenError('You are not authorized to update a book');
+    }
     const id = Number(req.params.id);
     const book = req.body;
     const serviceResponse = await this.bookService.updateBook(id, book);
@@ -52,6 +59,9 @@ export default class BookController {
   };
 
   public async deleteBook(req: Request, res: Response): Promise<Response> {
+    if (req.body.user.role !== 'admin') {
+      throw new JsonWebTokenError('You are not authorized to delete a book');
+    }
     const id = Number(req.params.id);
     const serviceResponse = await this.bookService.deleteBook(id);
 

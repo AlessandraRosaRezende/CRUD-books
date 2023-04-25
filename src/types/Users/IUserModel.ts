@@ -3,7 +3,7 @@ import ILogin from '../../interfaces/ILogin';
 
 export interface IModelReader<T> {
   findAll(): Promise<T[]>,
-  findOne(data: Omit<ILogin, "password">): Promise<T | null>,
+  findOne(data: ILogin): Promise<T | null>,
 }
 
 export interface IModelWriter<T> {

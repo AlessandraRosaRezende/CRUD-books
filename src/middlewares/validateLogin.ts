@@ -1,10 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import BadRequest from "./httpExceptions/HttpBadRequest";
 
 const validateLogin = (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    throw new BadRequest('All fields must be filled');
+    return res.status(400).json({ message: 'All fields must be filled' });
   }
   const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
   if (!emailRegex.test(email)) {

@@ -38,7 +38,7 @@ export default class UserService {
     const error = UserService.validationUser(user);
     if (error) return { status: 'INVALID_DATA', data: { message: error } };
 
-    const userFound = await this.userModel.findOne({ email: user.email });
+    const userFound = await this.userModel.findOne({ email: user.email, password: user.password });
     if (userFound) return { status: 'CONFLICT', data: { message: 'User already exists' } };
 
     const newUser = await this.userModel.create(user);
