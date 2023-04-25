@@ -1,4 +1,4 @@
-import { SequelizeBookModel } from '../models/SequelizeBookModel';
+import { BookModel } from '../models/BookModel';
 import { NewEntity } from '../types';
 import { IBook } from '../types/IBook';
 import { IModel } from '../types/IModel';
@@ -6,7 +6,7 @@ import { ServiceMessage, ServiceResponse } from '../types/ServiceResponse';
 
 export default class BookService {
   constructor(
-    private bookModel: IModel<IBook> = new SequelizeBookModel(),
+    private bookModel: IModel<IBook> = new BookModel(),
   ) { }
 
   public async getAllBooks(): Promise<ServiceResponse<IBook[]>> {
