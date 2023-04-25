@@ -20,26 +20,12 @@ export default class BookService {
     return { status: 'SUCCESSFUL', data: book };
   }
 
-  static validationBook(book: NewEntity<IBook>): string | null {
-    if (!book.title) return 'title is required';
-    if (!book.price) return 'price is required';
-    if (!book.author) return 'author is required';
-    if (!book.isbn) return 'isbn is required';
-    return null;
-  }
-
   public async createBook(book: NewEntity<IBook>): Promise<ServiceResponse<IBook | ServiceMessage>> {
-    const error = BookService.validationBook(book);
-    if (error) return { status: 'INVALID_DATA', data: { message: error } };
-
     const newBook = await this.bookModel.create(book);
     return { status: 'SUCCESSFUL', data: newBook };
   }
 
   public async updateBook(id: number, book: NewEntity<IBook>): Promise<ServiceResponse<ServiceMessage | IBook>> {
-    const error = BookService.validationBook(book);
-    if (error) return { status: 'INVALID_DATA', data: { message: error } };
-
     const updatedBook = await this.bookModel.update(id, book);
     if (!updatedBook) return { status: 'NOT_FOUND', data: { message: `Book ${id} not found` } };
     return { status: 'SUCCESSFUL', data: updatedBook };
