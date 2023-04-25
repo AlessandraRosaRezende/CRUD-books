@@ -1,7 +1,6 @@
 import { Op } from 'sequelize';
 import SequelizeBook from '../database/models/Book';
-import { NewEntity } from '../interfaces';
-import { IBook } from '../interfaces/books/IBook';
+import { IBook, INewBook } from '../interfaces/books/IBook';
 import { IBookModel } from '../interfaces/books/IBookModel';
 
 export default class BookModel implements IBookModel {
@@ -20,14 +19,14 @@ export default class BookModel implements IBookModel {
     ));
   };
 
-  create = async (data: NewEntity<IBook>): Promise<IBook> => {
+  create = async (data: INewBook): Promise<IBook> => {
     const dbData = await SequelizeBook.create(data);
 
     const { id, title, price, author, isbn }: IBook = dbData;
     return { id, title, price, author, isbn };
   };
 
-  update = async (id: number, data: Partial<IBook>): Promise<IBook | null> => {
+  update = async (id: number, data: Partial<INewBook>): Promise<IBook | null> => {
     const [affectedRows] = await SequelizeBook.update(data, { where: { id } });
     if (affectedRows === 0) return null;
 

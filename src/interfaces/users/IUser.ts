@@ -1,7 +1,8 @@
-import { Identifiable } from '..';
-
-export interface IUser extends Identifiable {
+export interface IUser {
+  id: number,
   email: string,
   password: string,
   name: string
 }
+
+export type INewUser = Omit<IUser, 'id'>;

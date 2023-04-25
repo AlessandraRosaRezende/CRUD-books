@@ -33,10 +33,21 @@ class Validations {
 
   static validateBook(req: Request, res: Response, next: NextFunction): Response | void {
     const book = req.body;
-    const requiredkeys = ['title', 'price', 'author', 'isbn'];
-    for (let i = 0; i < requiredkeys.length; i += 1) {
-      if (!(requiredkeys[i] in book)) {
-        return res.status(400).json({ message: `${requiredkeys[i]} is required` });
+    const requiredKeys = ['title', 'price', 'author', 'isbn'];
+    for (let i = 0; i < requiredKeys.length; i += 1) {
+      if (!(requiredKeys[i] in book)) {
+        return res.status(400).json({ message: `${requiredKeys[i]} is required` });
+      }
+    }
+    next();
+  }
+
+  static validationUser(req: Request, res: Response, next: NextFunction): Response | void {
+    const user = req.body;
+    const requiredKeys = ['email', 'password', 'name'];
+    for (let i = 0; i < requiredKeys.length; i += 1) {
+      if (!(requiredKeys[i] in user)) {
+        return res.status(400).json({ message: `${requiredKeys[i]} is required` });
       }
     }
     next();
