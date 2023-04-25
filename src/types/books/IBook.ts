@@ -1,4 +1,4 @@
-import { Identifiable } from ".";
+import { Identifiable } from "..";
 
 export interface IBook extends Identifiable {
   title: string,
