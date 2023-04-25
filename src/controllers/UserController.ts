@@ -10,7 +10,7 @@ export default class UserController {
   public async getAllUsers(_req: Request, res: Response): Promise<Response> {
     const serviceResponse = await this.userService.findAll();
 
-    if (serviceResponse.status !== 'SUCCESSFUL') {
+    if (serviceResponse.status !== 'successful') {
       return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
     }
 
@@ -20,7 +20,7 @@ export default class UserController {
   public async login(req: Request, res: Response): Promise<Response> {
     const serviceResponse = await this.userService.login(req.body);
 
-    if (serviceResponse.status !== 'SUCCESSFUL') {
+    if (serviceResponse.status !== 'successful') {
       return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
     }
     return res.status(200).json({ token: serviceResponse.data.message });
@@ -28,7 +28,7 @@ export default class UserController {
 
   public async createUser(req: Request, res: Response): Promise<Response> {
     const serviceResponse = await this.userService.createUser(req.body);
-    if (serviceResponse.status !== 'SUCCESSFUL') {
+    if (serviceResponse.status !== 'successful') {
       return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
     }
 

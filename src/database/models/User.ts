@@ -9,8 +9,6 @@ class User extends Model {
   declare password: string;
 
   declare name: string;
-
-  declare role: string;
 }
 
 User.init({
@@ -30,10 +28,6 @@ User.init({
   },
   name: {
     type: DataTypes.STRING(100),
-  },
-  role: {
-    type: DataTypes.STRING(100),
-    defaultValue: 'user',
   },
 }, {
   sequelize: db,

@@ -1,5 +1,5 @@
 import { Model, QueryInterface, DataTypes } from 'sequelize';
-import { IUser } from '../../types/users/IUser';
+import { IUser } from '../../interfaces/users/IUser';
 
 export default {
   up(queryInterface: QueryInterface) {
@@ -22,14 +22,10 @@ export default {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      role: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-    })
+    });
   },
 
   down(queryInterface: QueryInterface) {
-    return queryInterface.dropTable('users')
-  }
+    return queryInterface.dropTable('users');
+  },
 };

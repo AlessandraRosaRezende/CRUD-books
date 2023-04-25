@@ -1,4 +1,4 @@
-import { QueryInterface } from 'sequelize'; 
+import { QueryInterface } from 'sequelize';
 
 export default {
   up: async (queryInterface: QueryInterface) => {
@@ -7,14 +7,12 @@ export default {
         email: 'admin@admin.com',
         password: 'senhasecretadoadmin',
         name: 'Administrador',
-        role: 'admin'
       },
       {
         email: 'user@user.com',
         password: '123456',
         name: 'Usuário',
-        role: 'user'
-      }
+      },
     ], {});
   },
 

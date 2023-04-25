@@ -1,7 +1,7 @@
 import User from '../database/models/User';
-import { NewEntity } from '../types';
-import { IUser } from '../types/users/IUser';
-import { IUserModel } from '../types/users/IUserModel';
+import { NewEntity } from '../interfaces';
+import { IUser } from '../interfaces/users/IUser';
+import { IUserModel } from '../interfaces/users/IUserModel';
 
 export default class UserModel implements IUserModel {
   findAll = (): Promise<IUser[]> => User.findAll();

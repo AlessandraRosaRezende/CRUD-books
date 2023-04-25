@@ -1,5 +1,5 @@
 import { Model, QueryInterface, DataTypes } from 'sequelize';
-import { IBook } from '../../types/books/IBook';
+import { IBook } from '../../interfaces/books/IBook';
 
 export default {
   up(queryInterface: QueryInterface) {
@@ -26,10 +26,10 @@ export default {
         allowNull: false,
         type: DataTypes.STRING,
       },
-    })
+    });
   },
 
   down(queryInterface: QueryInterface) {
-    return queryInterface.dropTable('books')
-  }
+    return queryInterface.dropTable('books');
+  },
 };

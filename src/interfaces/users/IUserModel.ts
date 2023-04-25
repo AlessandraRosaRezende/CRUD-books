@@ -1,5 +1,5 @@
 import { NewEntity } from '..';
-import ILogin from '../../interfaces/ILogin';
+import ILogin from './ILogin';
 import { IUser } from './IUser';
 
 export interface IUserModel {

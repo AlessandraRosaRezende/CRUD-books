@@ -1,9 +1,9 @@
-type ServiceResponseStatus = 'INVALID_DATA'
-| 'UNAUTHORIZED'
-| 'NOT_FOUND'
-| 'SUCCESSFUL'
-| 'CONFLICT'
-| 'INTERNAL_SERVER_ERROR';
+type ServiceResponseStatus = 'invalidData'
+| 'unauthorized'
+| 'notFound'
+| 'successful'
+| 'conflict'
+| 'internalServerError';
 
 export type ServiceMessage = { message: string };
 

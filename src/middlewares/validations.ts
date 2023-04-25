@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { JsonWebTokenError } from 'jsonwebtoken';
-import UserService from '../services/UserService';
 import JWT from '../utils/JWT';
 
 const validator = new JWT();
-const userService = new UserService();
 
 class Validations {
   static async validateToken(request: Request, _response: Response, next: NextFunction):
@@ -13,8 +11,7 @@ class Validations {
     if (!token) {
       throw new JsonWebTokenError('Token not found');
     }
-    const payload = validator.verify(token);
-    request.body.user = await userService.findOne(payload.email);
+    validator.verify(token);
 
     next();
   }
