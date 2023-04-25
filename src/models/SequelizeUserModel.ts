@@ -1,8 +1,8 @@
 import User from '../database/models/User';
 import ILogin from '../interfaces/ILogin';
 import { NewEntity } from '../types';
-import { IUser } from '../types/Users/IUser';
-import { IModel } from '../types/Users/IUserModel';
+import { IUser } from '../types/users/IUser';
+import { IModel } from '../types/users/IUserModel';
 
 export class SequelizeUserModel implements IModel<IUser> {
   findAll = (): Promise<IUser[]> => User.findAll()

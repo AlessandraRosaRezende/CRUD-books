@@ -35,7 +35,6 @@ export default class BookController {
       throw new JsonWebTokenError('You are not authorized to create a book');
     }
     const serviceResponse = await this.bookService.createBook(req.body);
-
     if (serviceResponse.status !== 'SUCCESSFUL') {
       return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
     }

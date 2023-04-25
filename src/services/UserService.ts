@@ -1,7 +1,7 @@
 import { SequelizeUserModel } from '../models/SequelizeUserModel';
 import { NewEntity } from '../types';
-import { IUser } from '../types/Users/IUser';
-import { IModel } from '../types/Users/IUserModel';
+import { IUser } from '../types/users/IUser';
+import { IModel } from '../types/users/IUserModel';
 import { ServiceMessage, ServiceResponse } from '../types/ServiceResponse';
 import JWT from '../utils/JWT';
 import ILogin from '../interfaces/ILogin';

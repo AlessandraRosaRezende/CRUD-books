@@ -1,5 +1,5 @@
 import { Model, QueryInterface, DataTypes } from 'sequelize';
-import { IBook } from '../../types/Books/IBook';
+import { IBook } from '../../types/books/IBook';
 
 export default {
   up(queryInterface: QueryInterface) {

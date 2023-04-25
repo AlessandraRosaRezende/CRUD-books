@@ -1,7 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import db from '.';
 
-class Book extends Model {
+class SequelizeBook extends Model {
   declare id: number;
 
   declare title: string;
@@ -13,7 +13,7 @@ class Book extends Model {
   declare isbn: string;
 }
 
-Book.init({
+SequelizeBook.init({
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -41,4 +41,4 @@ Book.init({
   timestamps: false,
 });
 
-export default Book;
+export default SequelizeBook;

@@ -1,15 +1,13 @@
 import { Identifiable, NewEntity } from '..';
+import ILogin from '../../interfaces/ILogin';
 
 export interface IModelReader<T> {
-  find(id: Identifiable['id']): Promise<T | null>,
   findAll(): Promise<T[]>,
-  findByQuery(q: string): Promise<T[]>
+  findOne(data: ILogin): Promise<T | null>,
 }
 
 export interface IModelWriter<T> {
   create(data: NewEntity<T>): Promise<T>,
-  update(id: Identifiable['id'], data: Partial<T>): Promise<T | null>,
-  delete(id: Identifiable['id']): Promise<void>
 }
 
 export interface IModel<T> extends IModelReader<T>, IModelWriter<T> { }
