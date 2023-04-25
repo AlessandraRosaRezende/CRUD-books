@@ -1,13 +1,9 @@
-import { Identifiable, NewEntity } from '..';
+import { NewEntity } from '..';
 import ILogin from '../../interfaces/ILogin';
+import { IUser } from './IUser';
 
-export interface IModelReader<T> {
-  findAll(): Promise<T[]>,
-  findOne(data: ILogin): Promise<T | null>,
+export interface IUserModel {
+  findAll(): Promise<IUser[]>,
+  findOne(email: ILogin['email']): Promise<IUser | null>,
+  create(data: NewEntity<IUser>): Promise<IUser>,
 }
-
-export interface IModelWriter<T> {
-  create(data: NewEntity<T>): Promise<T>,
-}
-
-export interface IModel<T> extends IModelReader<T>, IModelWriter<T> { }
