@@ -5,6 +5,6 @@ export interface IBookModel {
   findAll(): Promise<IBook[]>,
   findByQuery(q: string): Promise<IBook[]>
   create(data: INewBook): Promise<IBook>,
-  update(id: IBook['id'], data: Partial<INewBook>): Promise<IBook | null>,
+  update(id: IBook['id'], data: Partial<INewBook>): Promise<void>,
   delete(id: IBook['id']): Promise<void>
 }

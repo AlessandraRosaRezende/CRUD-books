@@ -26,10 +26,9 @@ export default class BookService {
   }
 
   public async updateBook(id: number, book: INewBook):
-  Promise<ServiceResponse<ServiceMessage | IBook>> {
-    const updatedBook = await this.bookModel.update(id, book);
-    if (!updatedBook) return { status: 'notFound', data: { message: `Book ${id} not found` } };
-    return { status: 'successful', data: updatedBook };
+  Promise<ServiceResponse<ServiceMessage>> {
+    await this.bookModel.update(id, book);
+    return { status: 'successful', data: { message: 'Book updated' } };
   }
 
   public async deleteBook(id: number): Promise<ServiceResponse<ServiceMessage>> {
@@ -47,5 +46,15 @@ export default class BookService {
     }
 
     return { status: 'successful', data: book };
+  }
+
+  public async discountBook(id: number, discount: number):
+  Promise<ServiceResponse<ServiceMessage>> {
+    const book = await this.bookModel.find(id);
+    if (!book) return { status: 'notFound', data: { message: `Book ${id} not found` } };
+
+    const newPrice = book.price - (book.price * (discount / 100));
+    await this.bookModel.update(id, { price: newPrice });
+    return { status: 'successful', data: { message: 'Book updated' } };
   }
 }

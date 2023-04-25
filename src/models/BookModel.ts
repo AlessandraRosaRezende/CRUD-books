@@ -26,11 +26,8 @@ export default class BookModel implements IBookModel {
     return { id, title, price, author, isbn };
   };
 
-  update = async (id: number, data: Partial<INewBook>): Promise<IBook | null> => {
-    const [affectedRows] = await SequelizeBook.update(data, { where: { id } });
-    if (affectedRows === 0) return null;
-
-    return this.find(id);
+  update = async (id: number, data: Partial<INewBook>): Promise<void> => {
+    await SequelizeBook.update(data, { where: { id } });
   };
 
   delete = async (id: number): Promise<void> => {
