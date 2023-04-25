@@ -1,7 +1,7 @@
 {
   "extends": [
     "trybe-backend-typescript",
-    "eslint:strict",
-    "plugin:@typescript-eslint/strict"
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
   ]
 }
