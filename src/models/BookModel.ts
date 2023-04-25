@@ -9,7 +9,7 @@ export class BookModel implements IModel<IBook> {
     const dbData = await SequelizeBook.findByPk(id);
     if (dbData == null) return null;
 
-    const { title, price, author, isbn } = dbData;
+    const { title, price, author, isbn }: IBook = dbData;
     return { id, title, price, author, isbn }
   }
 
@@ -23,7 +23,7 @@ export class BookModel implements IModel<IBook> {
   async create(data: NewEntity<IBook>): Promise<IBook> {
     const dbData =  await SequelizeBook.create(data);
 
-    const { id, title, price, author, isbn } = dbData;
+    const { id, title, price, author, isbn }: IBook = dbData;
     return { id, title, price, author, isbn }
   }
 
