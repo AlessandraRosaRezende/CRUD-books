@@ -1,10 +1,9 @@
-import { Model, QueryInterface, DataTypes } from 'sequelize'; 
+import { Model, QueryInterface, DataTypes } from 'sequelize';
+import { IBook } from '../../types/IBook';
 
-import { Book } from '../../types/Book';
-
-export default { 
-  up(queryInterface: QueryInterface) { 
-    return queryInterface.createTable<Model<Book>>('books', { 
+export default {
+  up(queryInterface: QueryInterface) {
+    return queryInterface.createTable<Model<IBook>>('books', {
       id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -17,7 +16,7 @@ export default {
       },
       price: {
         allowNull: false,
-        type: DataTypes.DECIMAL(10,2),
+        type: DataTypes.DECIMAL(10, 2),
       },
       author: {
         type: DataTypes.STRING,
@@ -27,10 +26,10 @@ export default {
         allowNull: false,
         type: DataTypes.STRING,
       },
-    }) 
-  }, 
-  
-  down(queryInterface: QueryInterface) { 
-    return queryInterface.dropTable('books') 
-  } 
+    })
+  },
+
+  down(queryInterface: QueryInterface) {
+    return queryInterface.dropTable('books')
+  }
 };
