@@ -1,9 +1,10 @@
+import { Op } from 'sequelize';
 import SequelizeBook from '../database/models/Book';
 import { NewEntity } from '../types';
-import { IBook } from '../types/IBook';
-import { IModel } from '../types/IModel';
+import { IBook } from '../types/books/IBook';
+import { IBookModel } from '../types/books/IBookModel';
 
-export class BookModel implements IModel<IBook> {
+export class BookModel implements IBookModel {
 
   async find(id: number): Promise<IBook | null> {
     const dbData = await SequelizeBook.findByPk(id);
@@ -36,5 +37,13 @@ export class BookModel implements IModel<IBook> {
 
   async delete(id: number): Promise<void> {
     await SequelizeBook.destroy({ where: { id } });
+  }
+
+  async findByQuery(q: string): Promise<IBook[]> {
+    return SequelizeBook.findAll({ where: { 
+      'author': {
+        [Op.like]: `%${q}%`
+      }
+     }})
   }
 }
