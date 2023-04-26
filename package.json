@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha -r ts-node/register ./tests/**/*$NAME*.{test,spec}.ts -t 10000 --exit",
     "start": "ts-node src/server.ts",
     "dev": "nodemon --watch \"./src/**\" ./src/server.ts",
     "lint": "tsc && eslint . --ext .ts",
