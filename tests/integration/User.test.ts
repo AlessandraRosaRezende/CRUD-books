@@ -5,11 +5,10 @@ import App from '../../src/app';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
-import SequelizeBookModel from '../../src/database/models/BookModel';
+import SequelizeUserModel from '../../src/models/UserModel';
 import UserModel from '../../src/models/UserModel';
 import UserService from '../../src/services/UserService';
 import UserController from '../../src/controllers/UserController';
-import { describe, it } from 'node:test';
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -21,7 +20,7 @@ const URL = `http://localhost:${PORT}`;
 
 describe('User', function () {
   it('should return a list of users', async function () {
-    sinon.stub(UserService, 'findAll').resolves({
+    sinon.stub(new UserService(), 'findAll').resolves({
       status: 'successful',
       data: [
         { id: 1, name: 'Jon Doe', email: 'jondoe@email.com', password: 'JaneDoe' },
@@ -51,12 +50,12 @@ describe('User', function () {
       { id: 2, name: 'Jane Doe', email: 'janeDoe@email.com', password: 'JaneDoe' }
     ];
 
-    sinon.stub(SequelizeBookModel, 'findAll').resolves(users);
+    sinon.stub(new SequelizeUserModel(), 'findAll').resolves(users);
+    sinon.stub(new UserModel(), 'findAll').resolves(users);
 
-    const req = {}
-    const res = {
-      status: () => res
-    }
+    const { status, body } = await chai.request(URL).get('/users');
 
+    expect(status).to.equal(200);
+    expect(body).to.deep.equal(users);
   });
 });
