@@ -1,8 +1,9 @@
-export interface IUser {
-  id: number,
-  email: string,
-  password: string,
+import { Identifiable } from '../ICRUDModel';
+
+export interface ILogin {
+  email: string;
+  password: string;
+}
+export interface IUser extends Identifiable, ILogin {
   name: string
 }
-
-export type INewUser = Omit<IUser, 'id'>;

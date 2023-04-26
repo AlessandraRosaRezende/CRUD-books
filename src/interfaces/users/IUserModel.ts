@@ -1,8 +1,7 @@
-import ILogin from './ILogin';
-import { INewUser, IUser } from './IUser';
+import { ICRUDModelCreator, ICRUDModelReader } from '../ICRUDModel';
+import { IUser } from './IUser';
 
-export interface IUserModel {
-  findAll(): Promise<IUser[]>,
-  findOne(email: ILogin['email']): Promise<IUser | null>,
-  create(data: INewUser): Promise<IUser>,
+export interface IUserModel extends ICRUDModelReader<IUser>,
+  ICRUDModelCreator<IUser>{
+  findByEmail(email: IUser['email']): Promise<IUser | null>,
 }

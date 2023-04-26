@@ -42,7 +42,7 @@ class Validations {
     next();
   }
 
-  static validationUser(req: Request, res: Response, next: NextFunction): Response | void {
+  static validateUser(req: Request, res: Response, next: NextFunction): Response | void {
     const user = req.body;
     const requiredKeys = ['email', 'password', 'name'];
     for (let i = 0; i < requiredKeys.length; i += 1) {

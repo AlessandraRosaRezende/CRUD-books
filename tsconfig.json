@@ -3,8 +3,7 @@
     "target": "es2019",
     "module": "commonjs",
     "sourceMap": true,
-    // "outDir": "./build",
-    "noEmit": true,
+    "outDir": "./build",
     "rootDir": "./src",
     "strict": true,
     "moduleResolution": "node",
@@ -24,6 +23,8 @@
     "src/**/*"
   ],
   "exclude": [
-    "src/tests"
+    "src/tests",
+    "node_modules",
+    "build"
   ]
 }
