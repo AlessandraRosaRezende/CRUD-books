@@ -1,9 +1,9 @@
 import UserModel from '../models/UserModel';
-import { INewUser, IUser } from '../interfaces/users/IUser';
+import { ILogin, IUser } from '../interfaces/users/IUser';
 import { IUserModel } from '../interfaces/users/IUserModel';
 import { ServiceMessage, ServiceResponse } from '../interfaces/ServiceResponse';
 import JWT from '../utils/JWT';
-import ILogin from '../interfaces/users/ILogin';
+import { NewEntity } from '../interfaces/ICRUDModel';
 
 export default class UserService {
   constructor(
@@ -17,12 +17,12 @@ export default class UserService {
   }
 
   public async findOne(email: string): Promise<ServiceResponse<IUser | null>> {
-    const user = await this.userModel.findOne(email);
+    const user = await this.userModel.findByEmail(email);
     return { status: 'successful', data: user };
   }
 
   public async login(data: ILogin): Promise<ServiceResponse<ServiceMessage>> {
-    const user = await this.userModel.findOne(data.email);
+    const user = await this.userModel.findByEmail(data.email);
     if (user) {
       const validUser = user.password === data.password;
       if (!validUser) {
@@ -35,9 +35,9 @@ export default class UserService {
     return { status: 'notFound', data: { message: 'User not found' } };
   }
 
-  public async createUser(user: INewUser):
+  public async createUser(user: NewEntity<IUser>):
   Promise<ServiceResponse<IUser | ServiceMessage>> {
-    const userFound = await this.userModel.findOne(user.email);
+    const userFound = await this.userModel.findByEmail(user.email);
     if (userFound) return { status: 'conflict', data: { message: 'User already exists' } };
 
     const newUser = await this.userModel.create(user);

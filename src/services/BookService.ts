@@ -1,5 +1,6 @@
+import { NewEntity } from '../interfaces/ICRUDModel';
 import BookModel from '../models/BookModel';
-import { IBook, INewBook } from '../interfaces/books/IBook';
+import { IBook } from '../interfaces/books/IBook';
 import { IBookModel } from '../interfaces/books/IBookModel';
 import { ServiceMessage, ServiceResponse } from '../interfaces/ServiceResponse';
 
@@ -14,25 +15,23 @@ export default class BookService {
   }
 
   public async getBookById(id: number): Promise<ServiceResponse<IBook | ServiceMessage>> {
-    const book = await this.bookModel.find(id);
+    const book = await this.bookModel.findById(id);
     if (!book) return { status: 'notFound', data: { message: `Book ${id} not found` } };
     return { status: 'successful', data: book };
   }
 
-  public async createBook(book: INewBook):
-  Promise<ServiceResponse<IBook | ServiceMessage>> {
+  public async createBook(book: NewEntity<IBook>): Promise<ServiceResponse<IBook>> {
     const newBook = await this.bookModel.create(book);
     return { status: 'successful', data: newBook };
   }
 
-  public async updateBook(id: number, book: INewBook):
-  Promise<ServiceResponse<ServiceMessage>> {
+  public async updateBook(id: number, book: IBook): Promise<ServiceResponse<ServiceMessage>> {
     await this.bookModel.update(id, book);
     return { status: 'successful', data: { message: 'Book updated' } };
   }
 
   public async deleteBook(id: number): Promise<ServiceResponse<ServiceMessage>> {
-    const bookFound = await this.bookModel.find(id);
+    const bookFound = await this.bookModel.findById(id);
     if (!bookFound) return { status: 'notFound', data: { message: `Book ${id} not found` } };
 
     await this.bookModel.delete(id);
@@ -50,7 +49,7 @@ export default class BookService {
 
   public async discountBook(id: number, discount: number):
   Promise<ServiceResponse<ServiceMessage>> {
-    const book = await this.bookModel.find(id);
+    const book = await this.bookModel.findById(id);
     if (!book) return { status: 'notFound', data: { message: `Book ${id} not found` } };
 
     const newPrice = book.price - (book.price * (discount / 100));

@@ -1,42 +1,52 @@
 import { Op } from 'sequelize';
 import SequelizeBook from '../database/models/Book';
-import { IBook, INewBook } from '../interfaces/books/IBook';
+import { IBook } from '../interfaces/books/IBook';
 import { IBookModel } from '../interfaces/books/IBookModel';
+import { NewEntity } from '../interfaces/ICRUDModel';
 
 export default class BookModel implements IBookModel {
-  find = async (id: number): Promise<IBook | null> => {
-    const dbData = await SequelizeBook.findByPk(id);
+  private model = SequelizeBook;
+
+  async findById(id: IBook['id']): Promise<IBook | null> {
+    const dbData = await this.model.findByPk(id);
     if (dbData == null) return null;
 
     const { title, price, author, isbn }: IBook = dbData;
     return { id, title, price, author, isbn };
-  };
+  }
 
-  findAll = async (): Promise<IBook[]> => {
-    const dbData = await SequelizeBook.findAll();
+  async findAll(): Promise<IBook[]> {
+    const dbData = await this.model.findAll();
     return dbData.map(({ id, title, price, author, isbn }) => (
       { id, title, price, author, isbn }
     ));
-  };
+  }
 
-  create = async (data: INewBook): Promise<IBook> => {
-    const dbData = await SequelizeBook.create(data);
+  async create(data: NewEntity<IBook>): Promise<IBook> {
+    const dbData = await this.model.create(data);
 
     const { id, title, price, author, isbn }: IBook = dbData;
     return { id, title, price, author, isbn };
-  };
+  }
 
-  update = async (id: number, data: Partial<INewBook>): Promise<void> => {
-    await SequelizeBook.update(data, { where: { id } });
-  };
+  async update(id: IBook['id'], data: Partial<NewEntity<IBook>>): Promise<IBook | null> {
+    const [affectedRows] = await this.model.update(data, { where: { id } });
+    if (affectedRows === 0) return null;
 
-  delete = async (id: number): Promise<void> => {
-    await SequelizeBook.destroy({ where: { id } });
-  };
+    return this.findById(id);
+  }
 
-  findByQuery = async (q: string): Promise<IBook[]> => SequelizeBook.findAll({ where: {
-    author: {
-      [Op.like]: `%${q}%`,
-    },
-  } });
+  async delete(id: IBook['id']): Promise<number> {
+    return this.model.destroy({ where: { id } });
+  }
+
+  async findByQuery(q: string): Promise<IBook[]> {
+    return this.model.findAll({
+      where: {
+        author: {
+          [Op.like]: `%${q}%`,
+        },
+      },
+    });
+  }
 }
