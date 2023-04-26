@@ -24,6 +24,8 @@
     "src/**/*"
   ],
   "exclude": [
-    "src/tests"
+    "src/tests",
+    "node_modules", 
+    "build"
   ]
 }
