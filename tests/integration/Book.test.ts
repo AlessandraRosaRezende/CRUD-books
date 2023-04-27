@@ -51,5 +51,32 @@ describe('Books Test', function () {
     expect(body).to.deep.equal(book);
   });
 
+  it('shouldn\'t create a book without a token', async function () {
+    const { status, body } = await chai.request(app).post('/books');
+
+    expect(status).to.equal(500);
+    expect(body.message).to.equal('Token not found');
+  });
+
+  it('shouldn\'t create a book with an invalid token', async function () {
+    const { status, body } = await chai.request(app)
+      .post('/books')
+      .set('authorization', 'invalidToken');
+
+    expect(status).to.equal(500);
+    expect(body.message).to.equal('Token must be a valid token');
+  });
+
+  it('shouldn\'t create a book with invalid body data', async function () {
+    sinon.stub(JWT, 'verify').resolves();
+
+    const { status, body } = await chai.request(app).post('/books')
+      .set('authorization', 'validToken')
+      .send({});
+
+    expect(status).to.equal(400);
+    expect(body.message).to.equal('title is required');
+  });
+
   afterEach(sinon.restore);
 });
