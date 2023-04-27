@@ -1,5 +1,5 @@
 import { JsonWebTokenError, JwtPayload, Secret, sign, SignOptions, verify } from 'jsonwebtoken';
-import 'dotenv/config';
+// import 'dotenv/config';
 
 export default class JWT {
   private static secret: Secret = process.env.JWT_SECRET || '';
@@ -14,8 +14,7 @@ export default class JWT {
 
   static verify(token: string): JwtPayload {
     try {
-      const payload = verify(token, this.secret);
-      return payload as JwtPayload;
+      return verify(token, this.secret) as JwtPayload;
     } catch (error) {
       throw new JsonWebTokenError('Token must be a valid token');
     }
