@@ -9,11 +9,6 @@ export default class BookController {
 
   public async getAllBooks(_req: Request, res: Response) {
     const serviceResponse = await this.bookService.getAllBooks();
-
-    if (serviceResponse.status !== 'successful') {
-      return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
-    }
-
     res.status(200).json(serviceResponse.data);
   }
 
@@ -31,10 +26,6 @@ export default class BookController {
 
   public async createBook(req: Request, res: Response) {
     const serviceResponse = await this.bookService.createBook(req.body);
-    if (serviceResponse.status !== 'successful') {
-      return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
-    }
-
     res.status(201).json(serviceResponse.data);
   }
 
