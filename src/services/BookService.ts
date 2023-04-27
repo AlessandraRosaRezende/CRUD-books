@@ -26,7 +26,8 @@ export default class BookService {
   }
 
   public async updateBook(id: number, book: IBook): Promise<ServiceResponse<ServiceMessage>> {
-    await this.bookModel.update(id, book);
+    const updatedBook = await this.bookModel.update(id, book);
+    if (!updatedBook) return { status: 'notFound', data: { message: `Book ${id} not found` } };
     return { status: 'successful', data: { message: 'Book updated' } };
   }
 

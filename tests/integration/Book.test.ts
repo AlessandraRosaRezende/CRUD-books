@@ -35,6 +35,15 @@ describe('Books Test', function () {
     expect(body).to.deep.equal(book);
   });
 
+  it('should return not found if the book doesn\'t exists', async function () {
+    sinon.stub(SequelizeBook, 'findOne').resolves(null);
+
+    const { status, body } = await chai.request(app).get('/books/1');
+
+    expect(status).to.equal(404);
+    expect(body.message).to.equal('Book 1 not found');
+  });
+
   it('should create a book', async function () {
     sinon.stub(SequelizeBook, 'create').resolves(book as any);
 
@@ -94,6 +103,21 @@ describe('Books Test', function () {
     expect(body.message).to.equal('Book updated');
   });
 
+  it('should return not found when the book to update does not exists', async function () {
+    sinon.stub(JWT, 'verify').resolves();
+    sinon.stub(SequelizeBook, 'findByPk').resolves(book as any);
+    sinon.stub(SequelizeBook, 'update').resolves([0] as any);
+
+    const { id, ...sendData } = book;
+
+    const { status, body } = await chai.request(app).put('/books/1')
+      .set('authorization', 'validToken')
+      .send(sendData);
+
+    expect(status).to.equal(404);
+    expect(body.message).to.equal('Book 1 not found');
+  });
+
   it('should delete a book', async function () {
     sinon.stub(SequelizeBook, 'destroy').resolves();
     sinon.stub(SequelizeBook, 'findByPk').resolves(book as any);
@@ -117,6 +141,15 @@ describe('Books Test', function () {
 
     expect(status).to.equal(200);
     expect(body.message).to.equal('Book updated');
+  });
+
+  it('should return a book by author', async function () {
+    sinon.stub(SequelizeBook, 'findAll').resolves(books as any);
+
+    const { status, body } = await chai.request(app).get('/books/author/search?q=Author');
+
+    expect(status).to.equal(200);
+    expect(body).to.deep.equal(books);
   });
 
   afterEach(sinon.restore);
