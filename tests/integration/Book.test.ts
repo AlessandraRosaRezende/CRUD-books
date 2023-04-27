@@ -6,7 +6,9 @@ import chaiHttp = require('chai-http');
 
 import App from '../../src/app';
 import SequelizeBook from '../../src/database/models/SequelizeBook';
-import { books, book } from '..//mocks/Book.mocks';
+import { books, book } from '../mocks/Book.mocks';
+import JWT from '../../src/utils/JWT';
+import Validations from '../../src/middlewares/Validations';
 
 chai.use(chaiHttp);
 
@@ -30,6 +32,22 @@ describe('Books Test', function () {
     const { status, body } = await chai.request(app).get('/books/1');
 
     expect(status).to.equal(200);
+    expect(body).to.deep.equal(book);
+  });
+
+  it('should create a book', async function () {
+    sinon.stub(SequelizeBook, 'create').resolves(book as any);
+
+    sinon.stub(JWT, 'verify').resolves();
+    sinon.stub(Validations, 'validateBook').returns();
+
+    const { id, ...sendData } = book;
+
+    const { status, body } = await chai.request(app).post('/books')
+      .set('authorization', 'validToken')
+      .send(sendData);
+
+    expect(status).to.equal(201);
     expect(body).to.deep.equal(book);
   });
 
