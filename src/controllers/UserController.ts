@@ -18,7 +18,7 @@ export default class UserController {
   }
 
   public async getUserById(req: Request, res: Response): Promise<Response> {
-    const serviceResponse = await this.userService.findOneById(Number(req.params.id));
+    const serviceResponse = await this.userService.findById(Number(req.params.id));
 
     if (serviceResponse.status !== 'successful') {
       return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
