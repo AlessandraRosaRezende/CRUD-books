@@ -16,12 +16,12 @@ export default class UserService {
     return { status: 'successful', data: allUsers };
   }
 
-  public async findOneById(id: number): Promise<ServiceResponse<IUser | null>> {
+  public async findById(id: number): Promise<ServiceResponse<IUser | null>> {
     const user = await this.userModel.findById(id);
     return { status: 'successful', data: user };
   }
 
-  public async findOne(email: string): Promise<ServiceResponse<IUser | null>> {
+  public async findByEmail(email: string): Promise<ServiceResponse<IUser | null>> {
     const user = await this.userModel.findByEmail(email);
     return { status: 'successful', data: user };
   }
