@@ -32,22 +32,22 @@ class Validations {
   static validateBook(req: Request, res: Response, next: NextFunction): Response | void {
     const book = req.body;
     const requiredKeys = ['title', 'price', 'author', 'isbn'];
-    for (let i = 0; i < requiredKeys.length; i += 1) {
-      if (!(requiredKeys[i] in book)) {
-        return res.status(400).json({ message: `${requiredKeys[i]} is required` });
-      }
+    const notFoundKey = requiredKeys.find((key) => !(key in book));
+    if (notFoundKey) {
+      return res.status(400).json({ message: `${notFoundKey} is required` });
     }
+
     next();
   }
 
   static validateUser(req: Request, res: Response, next: NextFunction): Response | void {
     const user = req.body;
     const requiredKeys = ['email', 'password', 'name'];
-    for (let i = 0; i < requiredKeys.length; i += 1) {
-      if (!(requiredKeys[i] in user)) {
-        return res.status(400).json({ message: `${requiredKeys[i]} is required` });
-      }
+    const notFoundKey = requiredKeys.find((key) => !(key in user));
+    if (notFoundKey) {
+      return res.status(400).json({ message: `${notFoundKey} is required` });
     }
+
     next();
   }
 }
