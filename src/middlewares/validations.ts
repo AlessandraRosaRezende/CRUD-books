@@ -2,8 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import { JsonWebTokenError } from 'jsonwebtoken';
 import JWT from '../utils/JWT';
 
-const validator = new JWT();
-
 class Validations {
   static async validateToken(request: Request, _response: Response, next: NextFunction):
   Promise<void> {
@@ -11,7 +9,7 @@ class Validations {
     if (!token) {
       throw new JsonWebTokenError('Token not found');
     }
-    validator.verify(token);
+    JWT.verify(token);
 
     next();
   }

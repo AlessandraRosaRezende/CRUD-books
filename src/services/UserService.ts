@@ -8,7 +8,7 @@ import { NewEntity } from '../interfaces/ICRUDModel';
 export default class UserService {
   constructor(
     private userModel: IUserModel = new UserModel(),
-    private jwtService = new JWT(),
+    private jwtService = JWT,
   ) { }
 
   public async findAll(): Promise<ServiceResponse<IUser[]>> {

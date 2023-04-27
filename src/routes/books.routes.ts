@@ -1,6 +1,6 @@
 import { Request, Router, Response } from 'express';
 import BookController from '../controllers/BookController';
-import Validations from '../middlewares/validations';
+import Validations from '../middlewares/Validations';
 
 const bookController = new BookController();
 
