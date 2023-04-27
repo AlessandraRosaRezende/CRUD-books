@@ -15,4 +15,8 @@ const users = [
     }
 ];
 
-export { user, users };
+const validLoginBody = { email: 'jondoe@email.com', password: 'JonDoe'};
+const invalidPasswordLoginBody = { email: 'jondoe@email.com', password: 'Jon'};
+const invalidEmailLoginBody = { email: 'invalid_email', password: 'JonDoe'};
+
+export { user, users, invalidEmailLoginBody, invalidPasswordLoginBody, validLoginBody };
