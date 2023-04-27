@@ -78,5 +78,46 @@ describe('Books Test', function () {
     expect(body.message).to.equal('title is required');
   });
 
+  it('should update a book', async function () {
+    sinon.stub(SequelizeBook, 'update').resolves([1] as any);
+    sinon.stub(SequelizeBook, 'findByPk').resolves(book as any);
+    sinon.stub(JWT, 'verify').resolves();
+    sinon.stub(Validations, 'validateBook').returns();
+
+    const { id, ...sendData } = book;
+
+    const { status, body } = await chai.request(app).put('/books/1')
+      .set('authorization', 'validToken')
+      .send(sendData);
+
+    expect(status).to.equal(200);
+    expect(body.message).to.equal('Book updated');
+  });
+
+  it('should delete a book', async function () {
+    sinon.stub(SequelizeBook, 'destroy').resolves();
+    sinon.stub(SequelizeBook, 'findByPk').resolves(book as any);
+    sinon.stub(JWT, 'verify').resolves();
+
+    const { status, body } = await chai.request(app).delete('/books/1')
+      .set('authorization', 'validToken');
+
+    expect(status).to.equal(200);
+    expect(body.message).to.equal('Book deleted');
+  });
+
+  it('should change a book price', async function () {
+    sinon.stub(SequelizeBook, 'update').resolves([1] as any);
+    sinon.stub(SequelizeBook, 'findByPk').resolves(book as any);
+    sinon.stub(JWT, 'verify').resolves();
+
+    const { status, body } = await chai.request(app).patch('/books/1/discount')
+      .set('authorization', 'validToken')
+      .send({ discount: '5' });
+
+    expect(status).to.equal(200);
+    expect(body.message).to.equal('Book updated');
+  });
+
   afterEach(sinon.restore);
 });
