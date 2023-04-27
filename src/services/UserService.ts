@@ -6,6 +6,8 @@ import JWT from '../utils/JWT';
 import { NewEntity } from '../interfaces/ICRUDModel';
 
 export default class UserService {
+  private userNotFound = 'User not found';
+
   constructor(
     private userModel: IUserModel = new UserModel(),
     private jwtService = JWT,
@@ -16,13 +18,15 @@ export default class UserService {
     return { status: 'successful', data: allUsers };
   }
 
-  public async findById(id: number): Promise<ServiceResponse<IUser | null>> {
+  public async findById(id: number): Promise<ServiceResponse<IUser | ServiceMessage>> {
     const user = await this.userModel.findById(id);
+    if (!user) return { status: 'notFound', data: { message: this.userNotFound } };
     return { status: 'successful', data: user };
   }
 
-  public async findByEmail(email: string): Promise<ServiceResponse<IUser | null>> {
+  public async findByEmail(email: string): Promise<ServiceResponse<IUser | ServiceMessage>> {
     const user = await this.userModel.findByEmail(email);
+    if (!user) return { status: 'notFound', data: { message: this.userNotFound } };
     return { status: 'successful', data: user };
   }
 
@@ -37,7 +41,7 @@ export default class UserService {
       const token = this.jwtService.sign({ email });
       return { status: 'successful', data: { message: token } };
     }
-    return { status: 'notFound', data: { message: 'User not found' } };
+    return { status: 'notFound', data: { message: this.userNotFound } };
   }
 
   public async createUser(user: NewEntity<IUser>):
