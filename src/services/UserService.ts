@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/indent */
 import UserModel from '../models/UserModel';
 import { ILogin, IUser } from '../interfaces/users/IUser';
 import { IUserModel } from '../interfaces/users/IUserModel';
@@ -41,8 +40,8 @@ export default class UserService {
     return { status: 'notFound', data: { message: 'User not found' } };
   }
 
-  public async createUser(user: NewEntity<IUser>): Promise<ServiceResponse<IUser
-    | ServiceMessage>> {
+  public async createUser(user: NewEntity<IUser>):
+  Promise<ServiceResponse<IUser | ServiceMessage>> {
     const userFound = await this.userModel.findByEmail(user.email);
     if (userFound) return { status: 'conflict', data: { message: 'User already exists' } };
 
