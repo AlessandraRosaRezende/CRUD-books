@@ -8,7 +8,8 @@
     "start": "ts-node src/server.ts",
     "dev": "nodemon --watch \"./src/**\" ./src/server.ts",
     "lint": "tsc && eslint . --ext .ts",
-    "db:reset": "npx -y tsc && npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
+    "db:reset": "npx -y tsc && npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
+    "test:coverage": "nyc --all --include src/models --include src/services --include src/controllers npm run test"
   },
   "keywords": [],
   "author": "",
@@ -36,6 +37,7 @@
     "mocha": "10.2.0",
     "mysql2": "2.3.0",
     "nodemon": "2.0.22",
+    "nyc": "15.1.0",
     "sequelize-cli": "6.2.0",
     "sinon": "15.0.4",
     "ts-node-dev": "1.1.8",

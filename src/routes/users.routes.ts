@@ -10,5 +10,6 @@ router.post('/login', Validations.validateLogin, (req, res) => userController.lo
 router.post('/register', Validations.validateToken, Validations.validateUser, (req, res) =>
   userController.createUser(req, res));
 router.get('/', (req, res) => userController.getAllUsers(req, res));
+router.get('/:id', (req, res) => userController.getUserById(req, res));
 
 export default router;

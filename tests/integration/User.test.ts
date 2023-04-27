@@ -1,6 +1,7 @@
 import * as sinon from 'sinon';
 import * as chai from 'chai';
 import App from '../../src/app';
+import { users, user } from '../mocks/User.mocks';
 
 // @ts-ignore
 import chaiHttp = require('chai-http');
@@ -14,19 +15,37 @@ const { expect } = chai;
 const { app } = new App();
 
 describe('User', function () {
-  it('should return a list of users', async function () {
-    const users = [
-      { id: 1, name: 'Jon Doe', email: 'jondoe@email.com', password: 'JaneDoe' },
-      { id: 2, name: 'Jane Doe', email: 'janeDoe@email.com', password: 'JaneDoe' }
-    ];
 
-    sinon.stub(SequelizeUser, 'findAll').resolves(users as any);
+  describe('findAll', () => {
+    it('should return a list of users', async function () {
+      sinon.stub(SequelizeUser, 'findAll').resolves(users as any);
 
-    const { status, body } = await chai.request(app).get('/users');
+      const { status, body } = await chai.request(app).get('/users');
 
-    expect(status).to.equal(200);
-    expect(body).to.deep.equal(users);
+      expect(status).to.equal(200);
+      expect(body).to.deep.equal(users);
+
+      sinon.assert.calledOnce(SequelizeUser.findAll as any);
+
+      sinon.restore();
+    });
+
   });
 
-  afterEach(sinon.restore);
+  describe('findById', () => {
+    it('should return a user', async () => {
+      const findByIdStub = sinon.stub(SequelizeUser, 'findByPk').resolves(user as any);
+
+      const { status, body } = await chai.request(app).get('/users/1');
+
+      expect(status).to.equal(200);
+      expect(body).to.deep.equal(user);
+
+      sinon.assert.calledOnce(findByIdStub as any);
+
+      sinon.restore();
+    });
+    afterEach(sinon.restore);
+  });
+  
 });
