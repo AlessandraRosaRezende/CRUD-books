@@ -32,3 +32,5 @@ typings/
 # dotenv environment variables file
 .env
 .env.test
+
+.nyc_output/
