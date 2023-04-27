@@ -119,6 +119,20 @@ describe('login', () => {
 
     sinon.assert.calledOnce(SequelizeUser.findOne as any);
   });
+
+  it('should return invalid email and password', async () => {
+    sinon.stub(SequelizeUser, 'findOne').resolves(null);
+
+    const { status, body } = await chai.request(app).post('/users/login').send(user);
+
+    expect(status).to.equal(404);
+    expect(body.message).to.equal('User not found');
+
+    sinon.assert.calledOnce(SequelizeUser.findOne as any);
+
+    sinon.restore();
+  });
+  
 });
   afterEach(sinon.restore);
   
