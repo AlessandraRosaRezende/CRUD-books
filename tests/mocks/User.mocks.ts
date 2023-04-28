@@ -5,6 +5,13 @@ const user = {
     password: 'JonDoe'
 };
 
+const wrongPassUser = {
+    id: 1,
+    name: 'Jon Doe',
+    email: 'jondoe@email.com',
+    password: 'xxxxxxxxxx'
+};
+
 const users = [
     user,
     {
@@ -15,8 +22,15 @@ const users = [
     }
 ];
 
-const validLoginBody = { email: 'jondoe@email.com', password: 'JonDoe'};
+const validLoginBody = { email: 'jondoe@email.com', password: 'JonDoe' };
 const invalidPasswordLoginBody = { email: 'jondoe@email.com', password: 'Jon'};
 const invalidEmailLoginBody = { email: 'invalid_email', password: 'JonDoe'};
 
-export { user, users, invalidEmailLoginBody, invalidPasswordLoginBody, validLoginBody };
+export { 
+    user, 
+    users, 
+    invalidEmailLoginBody, 
+    invalidPasswordLoginBody, 
+    validLoginBody,
+    wrongPassUser,
+};
