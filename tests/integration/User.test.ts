@@ -1,7 +1,7 @@
 import * as sinon from 'sinon';
 import * as chai from 'chai';
 import App from '../../src/app';
-import { users, user, invalidEmailLoginBody, invalidPasswordLoginBody, validLoginBody } from '../mocks/User.mocks';
+import { users, user, invalidEmailLoginBody, invalidPasswordLoginBody, validLoginBody, wrongPassUser } from '../mocks/User.mocks';
 import JWT from '../../src/utils/JWT';
 import Validations from '../../src/middlewares/Validations';
 
@@ -34,6 +34,15 @@ describe('Users Test', function () {
 
     expect(status).to.equal(200);
     expect(body).to.deep.equal(user);
+  });
+
+  it('should return a message when user is not found', async function () {
+    sinon.stub(SequelizeUser, 'findByPk').resolves(null);
+
+    const { status, body } = await chai.request(app).get('/users/1');
+
+    expect(status).to.equal(404);
+    expect(body.message).to.equal('User not found');
   });
 
   it('should create a user', async function () {
@@ -78,6 +87,20 @@ describe('Users Test', function () {
     expect(status).to.equal(400);
     expect(body.message).to.equal('email is required');
   });
+
+  it('shouldn\'t create a user with an already existent email', async function () {
+    sinon.stub(JWT, 'verify').resolves();
+    sinon.stub(Validations, 'validateUser').returns();
+    sinon.stub(SequelizeUser, 'findOne').resolves(user as any);
+
+    const { status, body } = await chai.request(app).post('/users/register')
+      .set('authorization', 'validToken')
+      .send(user);
+
+    expect(status).to.equal(409);
+    expect(body.message).to.equal('User already exists');
+  });
+
   afterEach(sinon.restore);
 });
 
@@ -119,6 +142,7 @@ describe('Login Test', function () {
   it('should return a token when login is done', async function () {
     sinon.stub(SequelizeUser, 'findOne').resolves(user as any);
     sinon.stub(JWT, 'sign').returns('validToken');
+    sinon.stub(Validations, 'validateUser').returns();
 
     const { status, body } = await chai.request(app)
       .post('/users/login')
@@ -126,6 +150,19 @@ describe('Login Test', function () {
 
     expect(status).to.equal(200);
     expect(body).to.have.key('token')
+  });
+
+  it('should return invalid data when user password is wrong', async function () {
+    sinon.stub(SequelizeUser, 'findOne').resolves(wrongPassUser as any);
+    sinon.stub(JWT, 'sign').returns('validToken');
+    sinon.stub(Validations, 'validateUser').returns();
+
+    const { status, body } = await chai.request(app)
+      .post('/users/login')
+      .send(validLoginBody);
+
+    expect(status).to.equal(400);
+    expect(body.message).to.equal('Invalid email or password')
   });
 
   afterEach(sinon.restore);
