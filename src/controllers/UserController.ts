@@ -9,11 +9,6 @@ export default class UserController {
 
   public async getAllUsers(_req: Request, res: Response): Promise<Response> {
     const serviceResponse = await this.userService.findAll();
-
-    if (serviceResponse.status !== 'successful') {
-      return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
-    }
-
     return res.status(200).json(serviceResponse.data);
   }
 
