@@ -38,7 +38,7 @@ describe('Users Test', function () {
 
   it('should create a user', async function () {
     sinon.stub(SequelizeUser, 'create').resolves(user as any);
-
+    sinon.stub(SequelizeUser, 'findOne').resolves(null);
     sinon.stub(JWT, 'verify').resolves();
     sinon.stub(Validations, 'validateUser').returns();
 
@@ -116,12 +116,14 @@ describe('Login Test', function () {
     expect(body).to.be.deep.equal({ message: 'User not found' })
   });
 
-  it('should returns a token when login is done', async function () {
+  it('should return a token when login is done', async function () {
     sinon.stub(SequelizeUser, 'findOne').resolves(user as any);
+    sinon.stub(JWT, 'sign').returns('validToken');
 
     const { status, body } = await chai.request(app)
       .post('/users/login')
       .send(validLoginBody);
+
     expect(status).to.equal(200);
     expect(body).to.have.key('token')
   });
