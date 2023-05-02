@@ -8,7 +8,7 @@ import { NewEntity } from '../interfaces/ICRUDModel';
 export default class UserService {
   constructor(
     private userModel: IUserModel = new UserModel(),
-    private jwtService = new JWT(),
+    private jwtService = JWT,
   ) { }
 
   public async findAll(): Promise<ServiceResponse<IUser[]>> {
@@ -16,8 +16,10 @@ export default class UserService {
     return { status: 'successful', data: allUsers };
   }
 
-  public async findOne(email: string): Promise<ServiceResponse<IUser | null>> {
-    const user = await this.userModel.findByEmail(email);
+  public async findById(id: number): Promise<ServiceResponse<IUser | ServiceMessage>> {
+    const user = await this.userModel.findById(id);
+    if (!user) return { status: 'notFound', data: { message: 'User not found' } };
+
     return { status: 'successful', data: user };
   }
 

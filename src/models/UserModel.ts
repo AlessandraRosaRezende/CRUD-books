@@ -1,10 +1,10 @@
 import { NewEntity } from '../interfaces/ICRUDModel';
-import User from '../database/models/User';
+import SequelizeUser from '../database/models/SequelizeUser';
 import { IUser } from '../interfaces/users/IUser';
 import { IUserModel } from '../interfaces/users/IUserModel';
 
 export default class UserModel implements IUserModel {
-  private model = User;
+  private model = SequelizeUser;
 
   async findAll(): Promise<IUser[]> {
     const dbData = await this.model.findAll();

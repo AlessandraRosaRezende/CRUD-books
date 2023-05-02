@@ -1,5 +1,5 @@
 import { Op } from 'sequelize';
-import SequelizeBook from '../database/models/Book';
+import SequelizeBook from '../database/models/SequelizeBook';
 import { IBook } from '../interfaces/books/IBook';
 import { IBookModel } from '../interfaces/books/IBookModel';
 import { NewEntity } from '../interfaces/ICRUDModel';
