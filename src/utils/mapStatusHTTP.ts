@@ -1,12 +1,9 @@
 export default function mapStatusHTTP(status: string): number {
-  const statusHTTPMap: Record<string, number> = {
-    invalidData: 400,
-    unauthorized: 401,
-    notFound: 404,
-    conflict: 409,
-    internalServerError: 500,
-    successful: 200,
-  };
-
-  return statusHTTPMap[status] ?? 500;
+  switch (status) {
+    case 'SUCCESSFUL': return 200;
+    case 'INVALID_DATA': return 400;
+    case 'NOT_FOUND': return 404;
+    case 'CONFLICT': return 409;
+    default: return 500;
+  }
 }

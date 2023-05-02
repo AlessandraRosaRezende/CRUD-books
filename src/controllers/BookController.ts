@@ -17,7 +17,7 @@ export default class BookController {
 
     const serviceResponse = await this.bookService.getBookById(Number(id));
 
-    if (serviceResponse.status !== 'successful') {
+    if (serviceResponse.status !== 'SUCCESSFUL') {
       return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
     }
 
@@ -34,7 +34,7 @@ export default class BookController {
     const book = req.body;
     const serviceResponse = await this.bookService.updateBook(id, book);
 
-    if (serviceResponse.status !== 'successful') {
+    if (serviceResponse.status !== 'SUCCESSFUL') {
       return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
     }
 
@@ -45,7 +45,7 @@ export default class BookController {
     const id = Number(req.params.id);
     const serviceResponse = await this.bookService.deleteBook(id);
 
-    if (serviceResponse.status !== 'successful') {
+    if (serviceResponse.status !== 'SUCCESSFUL') {
       return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
     }
 
@@ -57,7 +57,7 @@ export default class BookController {
 
     const serviceResponse = await this.bookService.getBookByQuery(q as string);
 
-    if (serviceResponse.status !== 'successful') {
+    if (serviceResponse.status !== 'SUCCESSFUL') {
       return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
     }
 
@@ -69,7 +69,7 @@ export default class BookController {
     const { discount } = req.body;
     const serviceResponse = await this.bookService.discountBook(id, discount);
 
-    if (serviceResponse.status !== 'successful') {
+    if (serviceResponse.status !== 'SUCCESSFUL') {
       return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
     }
 
