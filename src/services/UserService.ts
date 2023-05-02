@@ -13,14 +13,14 @@ export default class UserService {
 
   public async findAll(): Promise<ServiceResponse<IUser[]>> {
     const allUsers = await this.userModel.findAll();
-    return { status: 'successful', data: allUsers };
+    return { status: 'SUCCESSFUL', data: allUsers };
   }
 
-  public async findById(id: number): Promise<ServiceResponse<IUser | ServiceMessage>> {
+  public async findById(id: number): Promise<ServiceResponse<IUser>> {
     const user = await this.userModel.findById(id);
-    if (!user) return { status: 'notFound', data: { message: 'User not found' } };
+    if (!user) return { status: 'NOT_FOUND', data: { message: 'User not found' } };
 
-    return { status: 'successful', data: user };
+    return { status: 'SUCCESSFUL', data: user };
   }
 
   public async login(data: ILogin): Promise<ServiceResponse<ServiceMessage>> {
@@ -28,21 +28,21 @@ export default class UserService {
     if (user) {
       const validUser = user.password === data.password;
       if (!validUser) {
-        return { status: 'invalidData', data: { message: 'Invalid email or password' } };
+        return { status: 'INVALID_DATA', data: { message: 'Invalid email or password' } };
       }
       const { email } = user as IUser;
       const token = this.jwtService.sign({ email });
-      return { status: 'successful', data: { message: token } };
+      return { status: 'SUCCESSFUL', data: { message: token } };
     }
-    return { status: 'notFound', data: { message: 'User not found' } };
+    return { status: 'NOT_FOUND', data: { message: 'User not found' } };
   }
 
   public async createUser(user: NewEntity<IUser>):
   Promise<ServiceResponse<IUser | ServiceMessage>> {
     const userFound = await this.userModel.findByEmail(user.email);
-    if (userFound) return { status: 'conflict', data: { message: 'User already exists' } };
+    if (userFound) return { status: 'CONFLICT', data: { message: 'User already exists' } };
 
     const newUser = await this.userModel.create(user);
-    return { status: 'successful', data: newUser };
+    return { status: 'SUCCESSFUL', data: newUser };
   }
 }

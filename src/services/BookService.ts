@@ -2,7 +2,9 @@ import { NewEntity } from '../interfaces/ICRUDModel';
 import BookModel from '../models/BookModel';
 import { IBook } from '../interfaces/books/IBook';
 import { IBookModel } from '../interfaces/books/IBookModel';
-import { ServiceMessage, ServiceResponse } from '../interfaces/ServiceResponse';
+import {
+  ServiceResponseError, ServiceResponse, ServiceMessage,
+} from '../interfaces/ServiceResponse';
 
 export default class BookService {
   constructor(
@@ -11,50 +13,50 @@ export default class BookService {
 
   public async getAllBooks(): Promise<ServiceResponse<IBook[]>> {
     const allBooks = await this.bookModel.findAll();
-    return { status: 'successful', data: allBooks };
+    return { status: 'SUCCESSFUL', data: allBooks };
   }
 
-  public async getBookById(id: number): Promise<ServiceResponse<IBook | ServiceMessage>> {
+  public async getBookById(id: number): Promise<ServiceResponse<IBook>> {
     const book = await this.bookModel.findById(id);
-    if (!book) return { status: 'notFound', data: { message: `Book ${id} not found` } };
-    return { status: 'successful', data: book };
+    if (!book) return { status: 'NOT_FOUND', data: { message: `Book ${id} not found` } };
+    return { status: 'SUCCESSFUL', data: book };
   }
 
   public async createBook(book: NewEntity<IBook>): Promise<ServiceResponse<IBook>> {
     const newBook = await this.bookModel.create(book);
-    return { status: 'successful', data: newBook };
+    return { status: 'SUCCESSFUL', data: newBook };
   }
 
   public async updateBook(id: number, book: IBook): Promise<ServiceResponse<ServiceMessage>> {
     const updatedBook = await this.bookModel.update(id, book);
-    if (!updatedBook) return { status: 'notFound', data: { message: `Book ${id} not found` } };
-    return { status: 'successful', data: { message: 'Book updated' } };
+    if (!updatedBook) return { status: 'NOT_FOUND', data: { message: `Book ${id} not found` } };
+    return { status: 'SUCCESSFUL', data: { message: 'Book updated' } };
   }
 
   public async deleteBook(id: number): Promise<ServiceResponse<ServiceMessage>> {
     const bookFound = await this.bookModel.findById(id);
-    if (!bookFound) return { status: 'notFound', data: { message: `Book ${id} not found` } };
+    if (!bookFound) return { status: 'NOT_FOUND', data: { message: `Book ${id} not found` } };
 
     await this.bookModel.delete(id);
-    return { status: 'successful', data: { message: 'Book deleted' } };
+    return { status: 'SUCCESSFUL', data: { message: 'Book deleted' } };
   }
 
-  public async getBookByQuery(q: string): Promise<ServiceResponse<IBook[] | ServiceMessage>> {
+  public async getBookByQuery(q: string): Promise<ServiceResponse<IBook[] | ServiceResponseError>> {
     const book = await this.bookModel.findByQuery(q);
     if (book && book.length === 0) {
-      return { status: 'notFound', data: { message: `Author ${q} not found` } };
+      return { status: 'NOT_FOUND', data: { message: `Author ${q} not found` } };
     }
 
-    return { status: 'successful', data: book };
+    return { status: 'SUCCESSFUL', data: book };
   }
 
   public async discountBook(id: number, discount: number):
   Promise<ServiceResponse<ServiceMessage>> {
     const book = await this.bookModel.findById(id);
-    if (!book) return { status: 'notFound', data: { message: `Book ${id} not found` } };
+    if (!book) return { status: 'NOT_FOUND', data: { message: `Book ${id} not found` } };
 
     const newPrice = book.price - (book.price * (discount / 100));
     await this.bookModel.update(id, { price: newPrice });
-    return { status: 'successful', data: { message: 'Book updated' } };
+    return { status: 'SUCCESSFUL', data: { message: 'Book updated' } };
   }
 }
