@@ -5,6 +5,7 @@ import { IUserModel } from '../interfaces/users/IUserModel';
 import { ServiceMessage, ServiceResponse } from '../interfaces/ServiceResponse';
 import JWT from '../utils/JWT';
 import { NewEntity } from '../interfaces/ICRUDModel';
+import { IToken } from '../interfaces/IToken';
 
 export default class UserService {
   constructor(
@@ -14,17 +15,19 @@ export default class UserService {
 
   public async findAll(): Promise<ServiceResponse<IUserResponse[]>> {
     const allUsers = await this.userModel.findAll();
-    return { status: 'SUCCESSFUL', data: allUsers };
+    const usersReturn = allUsers.map(({ id, name, email }) => ({ id, name, email }));
+    return { status: 'SUCCESSFUL', data: usersReturn };
   }
 
   public async findById(id: number): Promise<ServiceResponse<IUserResponse>> {
     const user = await this.userModel.findById(id);
     if (!user) return { status: 'NOT_FOUND', data: { message: 'User not found' } };
+    const { name, email } = user as IUser;
 
-    return { status: 'SUCCESSFUL', data: user };
+    return { status: 'SUCCESSFUL', data: { id, name, email } };
   }
 
-  public async login(data: ILogin): Promise<ServiceResponse<ServiceMessage>> {
+  public async login(data: ILogin): Promise<ServiceResponse<ServiceMessage | IToken>> {
     const user = await this.userModel.findByEmail(data.email);
     if (user) {
       if (!bcrypt.compareSync(data.password, user.password)) {
@@ -32,7 +35,7 @@ export default class UserService {
       }
       const { email } = user as IUser;
       const token = this.jwtService.sign({ email });
-      return { status: 'SUCCESSFUL', data: { message: token } };
+      return { status: 'SUCCESSFUL', data: { token } };
     }
     return { status: 'NOT_FOUND', data: { message: 'User not found' } };
   }
@@ -44,11 +47,8 @@ export default class UserService {
 
     const userPassword = bcrypt.hashSync(user.password, 10);
     const newUser = await this.userModel.create({ ...user, password: userPassword });
-    const userReturn = {
-      id: newUser.id,
-      name: newUser.name,
-      email: newUser.email,
-    };
-    return { status: 'SUCCESSFUL', data: userReturn };
+    const { id, name, email } = newUser as IUser;
+
+    return { status: 'SUCCESSFUL', data: { id, name, email } };
   }
 }

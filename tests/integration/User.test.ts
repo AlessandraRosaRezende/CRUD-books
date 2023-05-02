@@ -2,7 +2,7 @@ import * as sinon from 'sinon';
 import * as chai from 'chai';
 import App from '../../src/app';
 import { users, user, invalidEmailLoginBody, invalidPasswordLoginBody, 
-  validLoginBody, wrongPassUser, userRegistered } from '../mocks/User.mocks';
+  validLoginBody, wrongPassUser, userRegistered, userWithoutPassword } from '../mocks/User.mocks';
 import JWT from '../../src/utils/JWT';
 import Validations from '../../src/middlewares/Validations';
 
@@ -29,12 +29,12 @@ describe('Users Test', function () {
   });
 
   it('should return a user by id', async function () {
-    sinon.stub(SequelizeUser, 'findByPk').resolves(user as any);
+    sinon.stub(SequelizeUser, 'findByPk').resolves(userWithoutPassword as any);
 
     const { status, body } = await chai.request(app).get('/users/1');
 
     expect(status).to.equal(200);
-    expect(body).to.deep.equal(user);
+    expect(body).to.deep.equal(userWithoutPassword);
   });
 
   it('should return a message when user is not found', async function () {

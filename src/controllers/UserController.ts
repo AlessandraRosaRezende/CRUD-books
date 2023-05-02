@@ -28,7 +28,7 @@ export default class UserController {
     if (serviceResponse.status !== 'SUCCESSFUL') {
       return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
     }
-    return res.status(200).json({ token: serviceResponse.data.message });
+    return res.status(200).json({ token: serviceResponse.data });
   }
 
   public async createUser(req: Request, res: Response): Promise<Response> {

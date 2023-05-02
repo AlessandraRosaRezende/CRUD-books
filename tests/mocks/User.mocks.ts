@@ -5,6 +5,12 @@ const user = {
     password: 'JonDoe'
 };
 
+const userWithoutPassword = {
+    id: 1,
+    name: 'Jon Doe',
+    email: 'jondoe@email.com'
+};
+
 const wrongPassUser = {
     id: 1,
     name: 'Jon Doe',
@@ -13,12 +19,11 @@ const wrongPassUser = {
 };
 
 const users = [
-    user,
+    userWithoutPassword,
     {
         id: 2,
         name: 'Jane Doe',
-        email: 'janedoe@email.com',
-        password: 'JaneDoe'
+        email: 'janedoe@email.com'
     }
 ];
 
@@ -29,6 +34,7 @@ const userRegistered = { ...user, password: '$2a$08$xi.Hxk1czAO0nZR..B393u10aED0
 
 export { 
     user, 
+    userWithoutPassword,
     users, 
     invalidEmailLoginBody, 
     invalidPasswordLoginBody, 
