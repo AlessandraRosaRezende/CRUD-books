@@ -1,6 +1,6 @@
 import * as sinon from 'sinon';
 import * as chai from 'chai';
-import App from '../../src/app';
+import App from '../../src/App';
 import { users, user, invalidEmailLoginBody, invalidPasswordLoginBody, 
   validLoginBody, wrongPassUser, userRegistered, userWithoutPassword } from '../mocks/User.mocks';
 import JWT from '../../src/utils/JWT';
